@@ -3,4 +3,4 @@ Work in Progress Fight System
 
 Change Log:
 
-3-25-15: Repository Created, Fighter Class Created
+3-25-15: Repository Created, Fighter Class Created, Added System to allow entry of fighter stats.
