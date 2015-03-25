@@ -4,20 +4,42 @@
 using namespace std;
 
 class Fighter{
-	string name;
-	int endurance, strength, dexterity, intelligence;
-	int health{ endurance * 10 };
-	int stamina{ endurance * 5 };
-	int mana{ intelligence * 10 };
+	string name="Derp";
+	int endurance = 0, strength = 0, dexterity = 0, intelligence = 0, health = 0, stamina= 0, mana= 0;
 public:
-	void set_value(int);
+	void set_value(int, int);
+	void set_name(string);
 };
 
+void Fighter::set_name(string x){
+	x = name;
+}
+
+void Fighter::set_value(int stat, int stat_num){
+	switch (stat_num){
+	case 1:
+		strength = stat;
+		break;
+	case 2:
+		dexterity = stat;
+		break;
+	case 3:
+		endurance = stat;
+		break;
+	case 4:
+		intelligence = stat;
+		break;
+
+	default:
+		cout << "It broke. Yell at Remwald if seeing this.";
+	}
+
+};
 vector <Fighter> fighterVector;
 
 int main(){
-	int fighter_total;
-	int i=1;
+	int fighter_total, stat;
+	int i = 1;
 	string fighterName;
 	Fighter* Test;
 
@@ -25,20 +47,35 @@ int main(){
 	cin >> fighter_total; 
 	fighterVector.resize(fighter_total);
 
-	if (i < fighter_total)
-	{
-		Test = new Fighter;
-		fighterVector[i] = *Test; 
-		i++;
-	}
 
 	cout << " \n Fighters Successfully Initialized. \n";
-	for (int i = fighterVector.begin; i != fighterVector.end; i++)
+	for (int i = 0; i != fighter_total; i++)
 	{
-		cout << "Please Enter " << it << " Fighters Name:";
+		cout << "\n Please Enter Fighter " << i+1 << "'s Name:";
+		cin >> fighterName;
+		Test = new Fighter;
+		Fighter Test;
+		Test.set_name (fighterName);
+		cout << " Strength:";
+		cin >> stat;
+		Test.set_value(stat, 1);
+		cout << " Dexterity:";
+		cin >> stat;
+		Test.set_value(stat, 2); 
+		cout << " Endurance:";
+		cin >> stat;
+		Test.set_value(stat, 3);
+		cout << " Intelligence:";
+		cin >> stat;
+		Test.set_value(stat, 4);
+
+
+		fighterVector[i] = Test;
+
 	}
 	
-
+	system("Pause");
+	return 0;
 
 	
 }
