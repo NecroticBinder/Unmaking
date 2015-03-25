@@ -9,10 +9,12 @@ class Fighter{
 public:
 	void set_value(int, int);
 	void set_name(string);
+	void starting();
+	void get_stats();
 };
 
 void Fighter::set_name(string x){
-	x = name;
+	name = x;
 }
 
 void Fighter::set_value(int stat, int stat_num){
@@ -35,6 +37,20 @@ void Fighter::set_value(int stat, int stat_num){
 	}
 
 };
+
+void Fighter::starting(){
+	health = (endurance * 10);
+	stamina = (endurance * 5);
+	mana = (intelligence * 10);
+}
+
+void Fighter::get_stats()
+{
+	cout << name << "'s stats ";
+	cout << "Strength:" << strength << " Dexterity:" << dexterity << " Endurance:" << endurance << " Intelligence:" << intelligence;
+	cout << "\n Health:" << health << " Stamina:" << stamina << " Mana:" << mana << "\n";
+}
+
 vector <Fighter> fighterVector;
 
 int main(){
@@ -68,10 +84,9 @@ int main(){
 		cout << " Intelligence:";
 		cin >> stat;
 		Test.set_value(stat, 4);
-
+		Test.starting();
 
 		fighterVector[i] = Test;
-
 	}
 	
 	system("Pause");
