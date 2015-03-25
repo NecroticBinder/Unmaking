@@ -1,18 +1,44 @@
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
-int main(){
+class Fighter{
+	string name;
+	int endurance, strength, dexterity, intelligence;
+	int health{ endurance * 10 };
+	int stamina{ endurance * 5 };
+	int mana{ intelligence * 10 };
+public:
+	void set_value(int);
+};
 
-	class Fighter{
-		string name;
-		int endurance, strength, dexterity, intelligence;
-		int health{ endurance * 10 };
-		int stamina{ endurance * 5 };
-		int mana{ intelligence * 5 };
-	public:
-		void set_value(int);
-	};
+vector <Fighter> fighterVector;
+
+int main(){
+	int fighter_total;
+	int i=1;
+	string fighterName;
+	Fighter* Test;
+
+	cout << "Please enter the amount of fighters:";
+	cin >> fighter_total; 
+	fighterVector.resize(fighter_total);
+
+	if (i < fighter_total)
+	{
+		Test = new Fighter;
+		fighterVector[i] = *Test; 
+		i++;
+	}
+
+	cout << " \n Fighters Successfully Initialized. \n";
+	for (int i = fighterVector.begin; i != fighterVector.end; i++)
+	{
+		cout << "Please Enter " << it << " Fighters Name:";
+	}
+	
+
 
 	
 }
