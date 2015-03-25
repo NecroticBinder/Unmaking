@@ -1,0 +1,18 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+int main(){
+
+	class Fighter{
+		string name;
+		int endurance, strength, dexterity, intelligence;
+		int health{ endurance * 10 };
+		int stamina{ endurance * 5 };
+		int mana{ intelligence * 5 };
+	public:
+		void set_value(int);
+	};
+
+	
+}
