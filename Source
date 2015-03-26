@@ -1,17 +1,121 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <random>
+#include <chrono>
 using namespace std;
 
 class Fighter{
 	string name="Derp";
-	int endurance = 0, strength = 0, dexterity = 0, intelligence = 0, health = 0, stamina= 0, mana= 0;
+	int endurance = 0, strength = 0, dexterity = 0, intelligence = 0, health = 0, stamina = 0, mana = 0, initiative = 0;
+	void health_damage(int);
+	void stamina_damage(int);
+	void mana_damage(int);
 public:
 	void set_value(int, int);
 	void set_name(string);
 	void starting();
 	void get_stats();
+	void initiative_change();
+	void basic_attack();
+	void magic_attack();
+	void evade();
+	int share_initiative();
+	string share_name();
 };
+
+int roll();
+void turn_order_update(int, vector<Fighter>& fighterVector);
+int target_menu(int, int);
+
+vector <Fighter> fighterVector(1);
+
+int main(){
+	int fighter_total, stat, choice;
+	int k = 0;
+	string fighterName;
+	Fighter* Test;
+	bool endgame = false;
+
+	cout << "Please enter the amount of fighters:";
+	cin >> fighter_total; 
+	fighterVector.resize(fighter_total);
+
+	cout << " \n Fighters Successfully Initialized. \n";
+	for (int i = 0; i != fighter_total; i++)
+	{
+		cout << "\n Please Enter Fighter " << i+1 << "'s Name:";
+		cin >> fighterName;
+		Test = new Fighter;
+		Fighter Test;
+		Test.set_name (fighterName);
+		cout << " Strength:";
+		cin >> stat;
+		Test.set_value(stat, 1);
+		cout << " Dexterity:";
+		cin >> stat;
+		Test.set_value(stat, 2); 
+		cout << " Endurance:";
+		cin >> stat;
+		Test.set_value(stat, 3);
+		cout << " Intelligence:";
+		cin >> stat;
+		Test.set_value(stat, 4);
+		Test.starting();
+
+		fighterVector[i] = Test;
+		fighterVector[i].get_stats();
+	}
+
+	turn_order_update(fighter_total, fighterVector);
+
+	for (int z = 0; z < fighter_total; z++)
+	{
+		cout << fighterVector[z].share_name() << " goes with an initiative of " << fighterVector[z].share_initiative();
+			if (z < fighter_total)
+				cout << " and then ";
+	}
+	cout << "\n";
+	
+	int z = 0;
+	
+	while (endgame == false)
+	{
+		cout << "What move would you like to use? \n 1. Attack \n 2. Magic \n 3. Evade \n 4. Do nothing \n 5. End the Game \n";
+		cin >> choice;
+		switch (choice)
+		{
+		case 1:
+			choice = target_menu(fighter_total, z);
+			fighterVector[z].basic_attack();
+			break;
+		case 2:
+			target_menu(fighter_total, z);
+			fighterVector[z].magic_attack();
+			break;
+		case 3:
+			target_menu(fighter_total, z);
+			fighterVector[z].evade();
+			break;
+		case 4:
+			target_menu(fighter_total, z);
+			break;
+		case 5:
+			return 0;
+		}
+		if (z >= fighter_total)
+			z = 0;
+		else
+			z++;
+
+
+	}
+	
+	system("Pause");
+	return 0;
+
+	
+}
 
 void Fighter::set_name(string x){
 	name = x;
@@ -42,6 +146,7 @@ void Fighter::starting(){
 	health = (endurance * 10);
 	stamina = (endurance * 5);
 	mana = (intelligence * 10);
+	initiative = roll();
 }
 
 void Fighter::get_stats()
@@ -51,46 +156,89 @@ void Fighter::get_stats()
 	cout << "\n Health:" << health << " Stamina:" << stamina << " Mana:" << mana << "\n";
 }
 
-vector <Fighter> fighterVector;
+void Fighter::initiative_change()
+{
 
-int main(){
-	int fighter_total, stat;
-	int i = 1;
-	string fighterName;
-	Fighter* Test;
+}
 
-	cout << "Please enter the amount of fighters:";
-	cin >> fighter_total; 
-	fighterVector.resize(fighter_total);
+int Fighter::share_initiative()
+{
+	return initiative;
+}
 
+string Fighter::share_name()
+{
+	return name;
+}
 
-	cout << " \n Fighters Successfully Initialized. \n";
-	for (int i = 0; i != fighter_total; i++)
+void Fighter::basic_attack()
+{
+	return;
+}
+
+void Fighter::magic_attack()
+{
+	return;
+}
+
+void Fighter::evade()
+{
+	return;
+}
+int roll()
+{
+	unsigned seed = chrono::system_clock::now().time_since_epoch().count();
+	default_random_engine generator (seed);
+	uniform_int_distribution<int> dice_roller(1, 20);
+	int dice_roll = dice_roller(generator);
+	return dice_roll;
+}
+
+void turn_order_update(int fighter_total, vector<Fighter>& fighterVector)
+{
+	for (int j = 0; j<fighter_total; j++)
 	{
-		cout << "\n Please Enter Fighter " << i+1 << "'s Name:";
-		cin >> fighterName;
-		Test = new Fighter;
-		Fighter Test;
-		Test.set_name (fighterName);
-		cout << " Strength:";
-		cin >> stat;
-		Test.set_value(stat, 1);
-		cout << " Dexterity:";
-		cin >> stat;
-		Test.set_value(stat, 2); 
-		cout << " Endurance:";
-		cin >> stat;
-		Test.set_value(stat, 3);
-		cout << " Intelligence:";
-		cin >> stat;
-		Test.set_value(stat, 4);
-		Test.starting();
+		int index_of_max = j;
+		for (int y = j; y<fighter_total; y++)
+		{
+			if (fighterVector[index_of_max].share_initiative()<fighterVector[y].share_initiative())
+			{
+				index_of_max = y;
+			}
+		}
 
-		fighterVector[i] = Test;
+		Fighter temp = fighterVector[j];
+		fighterVector[j] = fighterVector[index_of_max];
+
+		fighterVector[index_of_max] = temp;
 	}
-	
-	system("Pause");
-	return 0;
+};
 
-	
+int target_menu(int fighter_total, int z)
+{
+	int k = 0;
+	int choice;
+	cout << "Please select a target: \n";
+	while (k < fighter_total)
+	{
+		if (k == z)
+		{
+			k++;
+		}
+		if (k < z)
+		{
+			cout << k + 1 << " " << fighterVector[k].share_name() << "\n";
+		}
+		else
+		{
+			cout << k << ". " << fighterVector[k].share_name() << "\n";
+		}
+		k++;
+	}
+	cin >> choice;
+	if (choice <= z)
+	{
+		choice--;
+	}
+	return choice;
 }
